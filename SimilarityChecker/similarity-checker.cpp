@@ -1,20 +1,24 @@
 #include <string>
+#include <algorithm>
 using std::string;
 
 
 class SimilarityChecker {
 public:
-	double checkLength(const string& string1, const string& string2) {
+	double checkLengthSimilarity(const string& string1, const string& string2) {
 		int length1 = static_cast<int>(string1.size());
 		int length2 = static_cast<int>(string2.size());
-		if (length1 == length2) return 60;
-		int bigLength = length1 > length2 ? length1 : length2;
-		int smallLength = length1 > length2 ? length2 : length1;
-		int gap = bigLength - smallLength;
+		return calculateSimilarity(length1, length2);
+	}
 
-		if (bigLength >= smallLength * 2) return 0;
-		
-		double score = (1 - (gap * 1.0) / smallLength) * 60;
-		return score;
+private:
+	const double MAX_LENGTH_SCORE = 60.;
+	const double MIN_LENGTH_SCORE = 0.;
+	double calculateSimilarity(int length1, int length2) {
+		int big = std::max(length1, length2);
+		int small = std::min(length1, length2);
+		if (big >= small * 2) return MIN_LENGTH_SCORE;
+		int gap = big - small;
+		return (1 - static_cast<double>(gap) / small) * MAX_LENGTH_SCORE;
 	}
 };

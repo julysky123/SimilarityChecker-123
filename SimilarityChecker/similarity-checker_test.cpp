@@ -1,27 +1,28 @@
 #include "gmock/gmock.h"
 #include "similarity-checker.cpp"
+using namespace testing;
 
-TEST(SimilarityChecker, SameLengthStringTest) {
+class SimilarityCheckerFixture : public Test {
+public:
 	SimilarityChecker sc;
-	double expected = 60.;
-	double actual = sc.checkLength("abc", "efg");
-	EXPECT_EQ(expected, actual);
+	void lengthSimilarityTest(double expected, const string& str1, const string& str2) {
+		double actual = sc.checkLengthSimilarity(str1, str2);
+		EXPECT_EQ(expected, actual);
+	}
+};
+
+TEST_F(SimilarityCheckerFixture, SameLengthStringTest) {
+	lengthSimilarityTest(60., "abc", "efg");
 }
 
-TEST(SimilarityChecker, MoreThanTwiceStringTest) {
-	SimilarityChecker sc;
-	double expected = 0.;
-	double actual = sc.checkLength("abcefgh", "efg");
-	EXPECT_EQ(expected, actual);
-	actual = sc.checkLength("efg", "abcefgh");
-	EXPECT_EQ(expected, actual);
+TEST_F(SimilarityCheckerFixture, MoreThanTwiceStringTest) {
+	lengthSimilarityTest(0., "abcefgh", "efg");
+	lengthSimilarityTest(0., "efg", "abcefgh");
 }
 
-TEST(SimilarityChecker, LengthStringTest) {
-	SimilarityChecker sc;
-	double expected = 30.;
-	double actual = sc.checkLength("abcdef", "abcd");
-	EXPECT_EQ(expected, actual);
+TEST_F(SimilarityCheckerFixture, LengthStringTest) {
+	lengthSimilarityTest(30., "abcdef", "abcd");
+	lengthSimilarityTest(30., "abcd", "abcdef");
 }
 
 int main() {
