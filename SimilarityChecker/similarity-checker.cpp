@@ -3,7 +3,6 @@
 #include <set>
 using std::string;
 
-
 class SimilarityChecker {
 public:
 	double checkLengthSimilarity(const string& string1, const string& string2) {
@@ -13,28 +12,34 @@ public:
 	}
 
 	double checkAlphabetSimilarity(const string& string1, const string& string2) {
-		std::set<char> totalAlphabetInTwoStrings;
-		std::set<char> sameAlphabetInTwoStrings;
+		int sameCnt = getSameAlphabetCountInTwoStrings(string1, string2);
+		int totalCnt = getTotalAlphabetCountInTwoStrings(string1, string2);
+		return calcualteAlphabetSimilarity(sameCnt, totalCnt);
+	}
+private:
+	static constexpr double MAX_LENGTH_SCORE = 60.;
+	static constexpr double MIN_LENGTH_SCORE = 0.;
+	static constexpr double MAX_ALPHABET_SCORE = 40.;
 
+	int getSameAlphabetCountInTwoStrings(const string& string1, const string& string2) {
+		std::set<char> sameAlphabetInTwoStrings;
 		for (char target = 'A'; target <= 'Z'; target++) {
 			if (string1.find(target) == string::npos) continue;
 			if (string2.find(target) == string::npos) continue;
 			sameAlphabetInTwoStrings.insert(target);
 		}
+		return static_cast<int>(sameAlphabetInTwoStrings.size());
+	}
 
+	int getTotalAlphabetCountInTwoStrings(const string& string1, const string& string2) {
+		std::set<char> totalAlphabetInTwoStrings;
 		for (char target = 'A'; target <= 'Z'; target++) {
 			if (string1.find(target) != string::npos) totalAlphabetInTwoStrings.insert(target);
 			if (string2.find(target) != string::npos) totalAlphabetInTwoStrings.insert(target);
 		}
-		int sameCnt = static_cast<int>(sameAlphabetInTwoStrings.size());
-		int totalCnt = static_cast<int>(totalAlphabetInTwoStrings.size());
-		return static_cast<double>(sameCnt) / totalCnt * 40;
-		
+		return static_cast<int>(totalAlphabetInTwoStrings.size());
 	}
 
-private:
-	const double MAX_LENGTH_SCORE = 60.;
-	const double MIN_LENGTH_SCORE = 0.;
 	double calculateLengthSimilarity(int length1, int length2) {
 		int big = std::max(length1, length2);
 		int small = std::min(length1, length2);
@@ -45,5 +50,9 @@ private:
 	bool isDoubleLength(int big, int small)
 	{
 		return big >= small * 2;
+	}
+	double calcualteAlphabetSimilarity(int sameCnt, int totalCnt)
+	{
+		return static_cast<double>(sameCnt) / totalCnt * MAX_ALPHABET_SCORE;
 	}
 };
