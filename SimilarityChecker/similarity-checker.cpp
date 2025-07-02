@@ -17,8 +17,12 @@ private:
 	double calculateLengthSimilarity(int length1, int length2) {
 		int big = std::max(length1, length2);
 		int small = std::min(length1, length2);
-		if (big >= small * 2) return MIN_LENGTH_SCORE;
+		if (isDoubleLength(big, small)) return MIN_LENGTH_SCORE;
 		int gap = big - small;
 		return (1 - static_cast<double>(gap) / small) * MAX_LENGTH_SCORE;
+	}
+	bool isDoubleLength(int big, int small)
+	{
+		return big >= small * 2;
 	}
 };
