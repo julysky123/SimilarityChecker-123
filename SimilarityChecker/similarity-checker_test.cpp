@@ -3,17 +3,24 @@
 
 TEST(SimilarityChecker, SameLengthStringTest) {
 	SimilarityChecker sc;
-	int expected = 60;
-	int actual = sc.checkLength("abc", "efg");
+	double expected = 60.;
+	double actual = sc.checkLength("abc", "efg");
 	EXPECT_EQ(expected, actual);
 }
 
 TEST(SimilarityChecker, MoreThanTwiceStringTest) {
 	SimilarityChecker sc;
-	int expected = 0;
-	int actual = sc.checkLength("abcefgh", "efg");
+	double expected = 0.;
+	double actual = sc.checkLength("abcefgh", "efg");
 	EXPECT_EQ(expected, actual);
 	actual = sc.checkLength("efg", "abcefgh");
+	EXPECT_EQ(expected, actual);
+}
+
+TEST(SimilarityChecker, LengthStringTest) {
+	SimilarityChecker sc;
+	double expected = 30.;
+	double actual = sc.checkLength("abcdef", "abcd");
 	EXPECT_EQ(expected, actual);
 }
 
