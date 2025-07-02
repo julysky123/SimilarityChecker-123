@@ -1,5 +1,6 @@
 #include <string>
 #include <algorithm>
+#include <set>
 using std::string;
 
 
@@ -9,6 +10,26 @@ public:
 		int length1 = static_cast<int>(string1.size());
 		int length2 = static_cast<int>(string2.size());
 		return calculateLengthSimilarity(length1, length2);
+	}
+
+	double checkAlphabetSimilarity(const string& string1, const string& string2) {
+		std::set<char> totalAlphabetInTwoStrings;
+		std::set<char> sameAlphabetInTwoStrings;
+
+		for (char target = 'A'; target <= 'Z'; target++) {
+			if (string1.find(target) == string::npos) continue;
+			if (string2.find(target) == string::npos) continue;
+			sameAlphabetInTwoStrings.insert(target);
+		}
+
+		for (char target = 'A'; target <= 'Z'; target++) {
+			if (string1.find(target) != string::npos) totalAlphabetInTwoStrings.insert(target);
+			if (string2.find(target) != string::npos) totalAlphabetInTwoStrings.insert(target);
+		}
+		int sameCnt = static_cast<int>(sameAlphabetInTwoStrings.size());
+		int totalCnt = static_cast<int>(totalAlphabetInTwoStrings.size());
+		return static_cast<double>(sameCnt) / totalCnt * 40;
+		
 	}
 
 private:
