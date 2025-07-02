@@ -8,13 +8,13 @@ public:
 	double checkLengthSimilarity(const string& string1, const string& string2) {
 		int length1 = static_cast<int>(string1.size());
 		int length2 = static_cast<int>(string2.size());
-		return calculateSimilarity(length1, length2);
+		return calculateLengthSimilarity(length1, length2);
 	}
 
 private:
 	const double MAX_LENGTH_SCORE = 60.;
 	const double MIN_LENGTH_SCORE = 0.;
-	double calculateSimilarity(int length1, int length2) {
+	double calculateLengthSimilarity(int length1, int length2) {
 		int big = std::max(length1, length2);
 		int small = std::min(length1, length2);
 		if (big >= small * 2) return MIN_LENGTH_SCORE;
